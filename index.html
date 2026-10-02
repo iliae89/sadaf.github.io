@@ -1,37 +1,52 @@
 ```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#09070b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <title>یه چیزی می‌خوام بهت بگم ❤️</title>
 
     <style>
-        /* =========================
-           RESET
-        ========================== */
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* =========================
-           BODY
-        ========================== */
+        html {
+            width: 100%;
+            min-height: 100%;
+            background: #09070b;
+        }
 
         body {
+            width: 100%;
             min-height: 100vh;
+            min-height: 100dvh;
+
             overflow: hidden;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            font-family: Tahoma, Arial, sans-serif;
+            padding:
+                max(20px, env(safe-area-inset-top))
+                max(20px, env(safe-area-inset-right))
+                max(20px, env(safe-area-inset-bottom))
+                max(20px, env(safe-area-inset-left));
+
+            font-family:
+                Tahoma,
+                Arial,
+                sans-serif;
+
             color: #fff;
 
             background:
@@ -45,12 +60,19 @@
             position: relative;
         }
 
-        /* نور متحرک پس‌زمینه */
+        /* =========================
+           BACKGROUND GLOW
+        ========================== */
 
         body::before {
             content: "";
             position: fixed;
-            inset: -30%;
+
+            width: 160vw;
+            height: 160vh;
+
+            left: -30vw;
+            top: -30vh;
 
             background:
                 conic-gradient(
@@ -63,11 +85,14 @@
                 );
 
             filter: blur(80px);
+            -webkit-filter: blur(80px);
+
             opacity: 0.17;
 
             animation: spin 14s linear infinite;
 
             pointer-events: none;
+            z-index: 0;
         }
 
         /* =========================
@@ -85,6 +110,8 @@
             pointer-events: none;
 
             animation: float 7s linear infinite;
+
+            z-index: 1;
         }
 
         .h1 {
@@ -112,6 +139,7 @@
 
         .card {
             position: relative;
+            z-index: 10;
 
             width: min(92vw, 470px);
 
@@ -123,7 +151,13 @@
 
             border: 1px solid rgba(255, 255, 255, 0.13);
 
-            background: rgba(20, 10, 17, 0.68);
+            background: rgba(20, 10, 17, 0.82);
+
+            /*
+                Safari fallback:
+                اگر backdrop-filter پشتیبانی نشد،
+                background بالا همچنان ظاهر خوبی می‌دهد.
+            */
 
             backdrop-filter: blur(22px);
             -webkit-backdrop-filter: blur(22px);
@@ -133,9 +167,14 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
             animation: appear 0.8s ease;
+
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
-        /* حلقه دور کارت */
+        /* =========================
+           RING
+        ========================== */
 
         .ring {
             position: absolute;
@@ -159,7 +198,6 @@
             display: inline-block;
 
             padding: 8px 15px;
-
             margin-bottom: 20px;
 
             border-radius: 999px;
@@ -201,14 +239,16 @@
         }
 
         /* =========================
-           MESSAGE AREA
+           MESSAGE
         ========================== */
 
         #msg {
             min-height: 125px;
 
             display: flex;
+
             flex-direction: column;
+
             justify-content: center;
 
             transition: opacity 0.25s ease;
@@ -245,10 +285,17 @@
 
             cursor: pointer;
 
+            color: #fff;
+
+            touch-action: manipulation;
+
             transition:
                 transform 0.25s ease,
                 box-shadow 0.25s ease,
                 background 0.25s ease;
+
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .btn:hover {
@@ -259,11 +306,11 @@
             transform: scale(0.96);
         }
 
-        /* دکمه اصلی */
+        /* =========================
+           YES
+        ========================== */
 
         .yes {
-            color: #fff;
-
             background:
                 linear-gradient(
                     135deg,
@@ -280,7 +327,9 @@
                 0 15px 40px rgba(255, 47, 109, 0.5);
         }
 
-        /* دکمه دوم */
+        /* =========================
+           NO
+        ========================== */
 
         .no {
             color: #f7dce5;
@@ -295,7 +344,7 @@
         }
 
         /* =========================
-           FINAL STATE
+           FINAL
         ========================== */
 
         .final h1 {
@@ -307,7 +356,7 @@
         }
 
         /* =========================
-           SPARK EFFECT
+           SPARK
         ========================== */
 
         .spark {
@@ -475,14 +524,28 @@
             }
         }
 
+        /* =========================
+           REDUCE MOTION
+           برای کاربرانی که انیمیشن را
+           غیرفعال کرده‌اند
+        ========================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- =========================
-         FLOATING HEARTS
-    ========================== -->
+    <!-- FLOATING HEARTS -->
 
     <div class="heart h1">♥</div>
     <div class="heart h2">♡</div>
@@ -490,9 +553,7 @@
     <div class="heart h4">♡</div>
 
 
-    <!-- =========================
-         MAIN CARD
-    ========================== -->
+    <!-- MAIN CARD -->
 
     <main class="card" id="card">
 
@@ -521,14 +582,18 @@
                 class="btn yes"
                 id="yesBtn"
                 type="button">
+
                 باشه 💗
+
             </button>
 
             <button
                 class="btn no"
                 id="noBtn"
                 type="button">
+
                 نگو 🙈
+
             </button>
 
         </div>
@@ -542,12 +607,20 @@
            ELEMENTS
         ========================== */
 
-        const card = document.getElementById("card");
-        const message = document.getElementById("msg");
-        const buttons = document.getElementById("buttons");
+        const card =
+            document.getElementById("card");
 
-        const yesBtn = document.getElementById("yesBtn");
-        const noBtn = document.getElementById("noBtn");
+        const message =
+            document.getElementById("msg");
+
+        const buttons =
+            document.getElementById("buttons");
+
+        const yesBtn =
+            document.getElementById("yesBtn");
+
+        const noBtn =
+            document.getElementById("noBtn");
 
 
         /* =========================
@@ -555,11 +628,17 @@
         ========================== */
 
         const noTexts = [
+
             "نگو؟ 🥺 باشه... ولی هنوز دلم می‌خواد بگمش ♥",
+
             "یعنی واقعاً نمی‌خوای بشنوی؟ 👀💗",
+
             "باشه، نمی‌گم... ولی یه لبخند بزن اول 😌",
+
             "این «نگو» خیلی بی‌رحمانه بود 🥹♥",
+
             "باشه... پس یه بار دیگه می‌پرسم؛ بگم؟ 🌙"
+
         ];
 
         let noIndex = 0;
@@ -573,9 +652,10 @@
 
             message.style.opacity = "0";
 
-            setTimeout(() => {
+            setTimeout(function () {
 
                 message.innerHTML = `
+
                     <h1>
                         ${noTexts[noIndex % noTexts.length]}
                     </h1>
@@ -583,6 +663,7 @@
                     <p>
                         باشه... ولی هنوز یه حرف قشنگ برات دارم ❤️
                     </p>
+
                 `;
 
                 message.style.opacity = "1";
@@ -603,9 +684,10 @@
 
             message.style.opacity = "0";
 
-            setTimeout(() => {
+            setTimeout(function () {
 
                 message.innerHTML = `
+
                     <h1>
                         حالا بیا بازی کنیم 🎮❤️
                     </h1>
@@ -613,28 +695,36 @@
                     <p>
                         منتظرت بودم... آماده‌ای؟ ✨
                     </p>
+
                 `;
 
                 buttons.innerHTML = `
+
                     <button
                         class="btn yes"
                         id="startBtn"
                         type="button">
+
                         بزن بریم 💞
+
                     </button>
+
                 `;
 
                 card.classList.add("final");
 
                 message.style.opacity = "1";
 
+
                 const startBtn =
                     document.getElementById("startBtn");
+
 
                 startBtn.addEventListener(
                     "click",
                     startGame
                 );
+
 
                 createSparkBurst(18);
 
@@ -650,9 +740,10 @@
 
             message.style.opacity = "0";
 
-            setTimeout(() => {
+            setTimeout(function () {
 
                 message.innerHTML = `
+
                     <h1>
                         شروع شد! 🎮💕
                     </h1>
@@ -660,6 +751,7 @@
                     <p>
                         این دفعه فرار ممنوعه 😏
                     </p>
+
                 `;
 
                 message.style.opacity = "1";
@@ -683,12 +775,19 @@
                 "✨"
             ];
 
-            for (let i = 0; i < amount; i++) {
+
+            for (
+                let i = 0;
+                i < amount;
+                i++
+            ) {
 
                 const spark =
                     document.createElement("span");
 
+
                 spark.className = "spark";
+
 
                 spark.textContent =
                     symbols[
@@ -698,23 +797,22 @@
                         )
                     ];
 
-                /*
-                    محل شروع افکت
-                    تقریباً وسط صفحه
-                */
+
+                /* محل شروع */
 
                 spark.style.left = "50%";
+
                 spark.style.top = "48%";
 
-                /*
-                    مسیر تصادفی حرکت
-                */
+
+                /* مسیر تصادفی */
 
                 const x =
                     Math.random() * 300 - 150;
 
                 const y =
                     Math.random() * 220 - 110;
+
 
                 spark.style.setProperty(
                     "--x",
@@ -726,15 +824,20 @@
                     `${y}px`
                 );
 
-                document.body.appendChild(spark);
 
-                /*
-                    پاک کردن عنصر بعد از انیمیشن
-                */
+                document.body.appendChild(
+                    spark
+                );
 
-                setTimeout(() => {
+
+                /* حذف بعد از انیمیشن */
+
+                setTimeout(function () {
+
                     spark.remove();
+
                 }, 1000);
+
             }
         }
 
@@ -755,20 +858,23 @@
 
 
         /* =========================
-           PREVENT DOUBLE TAP ZOOM
-           ON MOBILE
+           MOBILE TOUCH
         ========================== */
 
         document.addEventListener(
             "dblclick",
-            event => {
+            function (event) {
+
                 event.preventDefault();
+
+            },
+            {
+                passive: false
             }
         );
 
     </script>
 
 </body>
-
 </html>
 ```
