@@ -1,0 +1,774 @@
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>یه چیزی می‌خوام بهت بگم ❤️</title>
+
+    <style>
+        /* =========================
+           RESET
+        ========================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* =========================
+           BODY
+        ========================== */
+
+        body {
+            min-height: 100vh;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: Tahoma, Arial, sans-serif;
+            color: #fff;
+
+            background:
+                radial-gradient(
+                    circle at 50% 35%,
+                    #4b1728 0%,
+                    #210c18 28%,
+                    #09070b 70%
+                );
+
+            position: relative;
+        }
+
+        /* نور متحرک پس‌زمینه */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: -30%;
+
+            background:
+                conic-gradient(
+                    from 0deg,
+                    transparent,
+                    #ff3d76,
+                    transparent,
+                    #9c3cff,
+                    transparent
+                );
+
+            filter: blur(80px);
+            opacity: 0.17;
+
+            animation: spin 14s linear infinite;
+
+            pointer-events: none;
+        }
+
+        /* =========================
+           FLOATING HEARTS
+        ========================== */
+
+        .heart {
+            position: fixed;
+            bottom: -60px;
+
+            font-size: 20px;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            animation: float 7s linear infinite;
+        }
+
+        .h1 {
+            left: 8%;
+        }
+
+        .h2 {
+            left: 25%;
+            animation-delay: 2s;
+        }
+
+        .h3 {
+            right: 18%;
+            animation-delay: 4s;
+        }
+
+        .h4 {
+            right: 7%;
+            animation-delay: 1s;
+        }
+
+        /* =========================
+           CARD
+        ========================== */
+
+        .card {
+            position: relative;
+
+            width: min(92vw, 470px);
+
+            padding: 42px 28px 34px;
+
+            text-align: center;
+
+            border-radius: 30px;
+
+            border: 1px solid rgba(255, 255, 255, 0.13);
+
+            background: rgba(20, 10, 17, 0.68);
+
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+
+            box-shadow:
+                0 25px 90px rgba(255, 30, 100, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+            animation: appear 0.8s ease;
+        }
+
+        /* حلقه دور کارت */
+
+        .ring {
+            position: absolute;
+
+            inset: -12px;
+
+            border-radius: 42px;
+
+            border: 1px solid rgba(255, 91, 135, 0.18);
+
+            animation: pulse 2.8s ease-in-out infinite;
+
+            pointer-events: none;
+        }
+
+        /* =========================
+           BADGE
+        ========================== */
+
+        .badge {
+            display: inline-block;
+
+            padding: 8px 15px;
+
+            margin-bottom: 20px;
+
+            border-radius: 999px;
+
+            background: rgba(255, 72, 119, 0.1);
+
+            border: 1px solid rgba(255, 112, 151, 0.28);
+
+            color: #ffabc3;
+
+            font-size: 12px;
+
+            letter-spacing: 3px;
+        }
+
+        /* =========================
+           TEXT
+        ========================== */
+
+        h1 {
+            margin-bottom: 14px;
+
+            font-size: 30px;
+
+            line-height: 1.6;
+
+            text-shadow:
+                0 0 28px rgba(255, 67, 120, 0.35);
+        }
+
+        p {
+            margin-bottom: 30px;
+
+            color: #d9c3cc;
+
+            font-size: 15px;
+
+            line-height: 2;
+        }
+
+        /* =========================
+           MESSAGE AREA
+        ========================== */
+
+        #msg {
+            min-height: 125px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            transition: opacity 0.25s ease;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================== */
+
+        .buttons {
+            display: flex;
+
+            flex-direction: row-reverse;
+
+            justify-content: center;
+
+            gap: 14px;
+        }
+
+        .btn {
+            min-width: 125px;
+
+            padding: 15px 31px;
+
+            border: 0;
+
+            border-radius: 16px;
+
+            font-family: inherit;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.03);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        /* دکمه اصلی */
+
+        .yes {
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff3f78,
+                    #b91d55
+                );
+
+            box-shadow:
+                0 12px 30px rgba(255, 47, 109, 0.3);
+        }
+
+        .yes:hover {
+            box-shadow:
+                0 15px 40px rgba(255, 47, 109, 0.5);
+        }
+
+        /* دکمه دوم */
+
+        .no {
+            color: #f7dce5;
+
+            background: rgba(255, 255, 255, 0.07);
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .no:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* =========================
+           FINAL STATE
+        ========================== */
+
+        .final h1 {
+            font-size: 32px;
+        }
+
+        .final p {
+            color: #ffd7e2;
+        }
+
+        /* =========================
+           SPARK EFFECT
+        ========================== */
+
+        .spark {
+            position: fixed;
+
+            pointer-events: none;
+
+            font-size: 22px;
+
+            animation: burst 1s ease forwards;
+
+            z-index: 100;
+        }
+
+        /* =========================
+           ANIMATIONS
+        ========================== */
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: scale(1.02);
+                opacity: 0.65;
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform:
+                    translateY(0)
+                    scale(0.7)
+                    rotate(0deg);
+
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 0.55;
+            }
+
+            85% {
+                opacity: 0.25;
+            }
+
+            100% {
+                transform:
+                    translateY(-110vh)
+                    scale(1.25)
+                    rotate(25deg);
+
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst {
+            0% {
+                transform:
+                    translate(0, 0)
+                    scale(0.5);
+
+                opacity: 1;
+            }
+
+            100% {
+                transform:
+                    translate(var(--x), var(--y))
+                    scale(1.4);
+
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 520px) {
+
+            .card {
+                width: 90vw;
+
+                padding:
+                    34px
+                    20px
+                    28px;
+
+                border-radius: 25px;
+            }
+
+            .ring {
+                inset: -8px;
+
+                border-radius: 34px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .final h1 {
+                font-size: 27px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            .buttons {
+                gap: 10px;
+            }
+
+            .btn {
+                min-width: 110px;
+
+                padding:
+                    13px
+                    20px;
+
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 360px) {
+
+            .card {
+                padding:
+                    30px
+                    15px
+                    24px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         FLOATING HEARTS
+    ========================== -->
+
+    <div class="heart h1">♥</div>
+    <div class="heart h2">♡</div>
+    <div class="heart h3">♥</div>
+    <div class="heart h4">♡</div>
+
+
+    <!-- =========================
+         MAIN CARD
+    ========================== -->
+
+    <main class="card" id="card">
+
+        <div class="ring"></div>
+
+        <div class="badge">
+            FOR YOU ♥
+        </div>
+
+        <section id="msg">
+
+            <h1>
+                می‌خوام بهت چیزی بگم...
+            </h1>
+
+            <p>
+                یه چیز کوچیکه، ولی شاید قشنگ باشه 👀
+            </p>
+
+        </section>
+
+
+        <div class="buttons" id="buttons">
+
+            <button
+                class="btn yes"
+                id="yesBtn"
+                type="button">
+                باشه 💗
+            </button>
+
+            <button
+                class="btn no"
+                id="noBtn"
+                type="button">
+                نگو 🙈
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        /* =========================
+           ELEMENTS
+        ========================== */
+
+        const card = document.getElementById("card");
+        const message = document.getElementById("msg");
+        const buttons = document.getElementById("buttons");
+
+        const yesBtn = document.getElementById("yesBtn");
+        const noBtn = document.getElementById("noBtn");
+
+
+        /* =========================
+           NO BUTTON MESSAGES
+        ========================== */
+
+        const noTexts = [
+            "نگو؟ 🥺 باشه... ولی هنوز دلم می‌خواد بگمش ♥",
+            "یعنی واقعاً نمی‌خوای بشنوی؟ 👀💗",
+            "باشه، نمی‌گم... ولی یه لبخند بزن اول 😌",
+            "این «نگو» خیلی بی‌رحمانه بود 🥹♥",
+            "باشه... پس یه بار دیگه می‌پرسم؛ بگم؟ 🌙"
+        ];
+
+        let noIndex = 0;
+
+
+        /* =========================
+           NO BUTTON
+        ========================== */
+
+        function sayNo() {
+
+            message.style.opacity = "0";
+
+            setTimeout(() => {
+
+                message.innerHTML = `
+                    <h1>
+                        ${noTexts[noIndex % noTexts.length]}
+                    </h1>
+
+                    <p>
+                        باشه... ولی هنوز یه حرف قشنگ برات دارم ❤️
+                    </p>
+                `;
+
+                message.style.opacity = "1";
+
+                noIndex++;
+
+                createSparkBurst(7);
+
+            }, 180);
+        }
+
+
+        /* =========================
+           YES BUTTON
+        ========================== */
+
+        function sayYes() {
+
+            message.style.opacity = "0";
+
+            setTimeout(() => {
+
+                message.innerHTML = `
+                    <h1>
+                        حالا بیا بازی کنیم 🎮❤️
+                    </h1>
+
+                    <p>
+                        منتظرت بودم... آماده‌ای؟ ✨
+                    </p>
+                `;
+
+                buttons.innerHTML = `
+                    <button
+                        class="btn yes"
+                        id="startBtn"
+                        type="button">
+                        بزن بریم 💞
+                    </button>
+                `;
+
+                card.classList.add("final");
+
+                message.style.opacity = "1";
+
+                const startBtn =
+                    document.getElementById("startBtn");
+
+                startBtn.addEventListener(
+                    "click",
+                    startGame
+                );
+
+                createSparkBurst(18);
+
+            }, 180);
+        }
+
+
+        /* =========================
+           START GAME
+        ========================== */
+
+        function startGame() {
+
+            message.style.opacity = "0";
+
+            setTimeout(() => {
+
+                message.innerHTML = `
+                    <h1>
+                        شروع شد! 🎮💕
+                    </h1>
+
+                    <p>
+                        این دفعه فرار ممنوعه 😏
+                    </p>
+                `;
+
+                message.style.opacity = "1";
+
+                createSparkBurst(25);
+
+            }, 180);
+        }
+
+
+        /* =========================
+           SPARK / HEART BURST
+        ========================== */
+
+        function createSparkBurst(amount = 6) {
+
+            const symbols = [
+                "♥",
+                "♡",
+                "✦",
+                "✨"
+            ];
+
+            for (let i = 0; i < amount; i++) {
+
+                const spark =
+                    document.createElement("span");
+
+                spark.className = "spark";
+
+                spark.textContent =
+                    symbols[
+                        Math.floor(
+                            Math.random() *
+                            symbols.length
+                        )
+                    ];
+
+                /*
+                    محل شروع افکت
+                    تقریباً وسط صفحه
+                */
+
+                spark.style.left = "50%";
+                spark.style.top = "48%";
+
+                /*
+                    مسیر تصادفی حرکت
+                */
+
+                const x =
+                    Math.random() * 300 - 150;
+
+                const y =
+                    Math.random() * 220 - 110;
+
+                spark.style.setProperty(
+                    "--x",
+                    `${x}px`
+                );
+
+                spark.style.setProperty(
+                    "--y",
+                    `${y}px`
+                );
+
+                document.body.appendChild(spark);
+
+                /*
+                    پاک کردن عنصر بعد از انیمیشن
+                */
+
+                setTimeout(() => {
+                    spark.remove();
+                }, 1000);
+            }
+        }
+
+
+        /* =========================
+           EVENTS
+        ========================== */
+
+        yesBtn.addEventListener(
+            "click",
+            sayYes
+        );
+
+        noBtn.addEventListener(
+            "click",
+            sayNo
+        );
+
+
+        /* =========================
+           PREVENT DOUBLE TAP ZOOM
+           ON MOBILE
+        ========================== */
+
+        document.addEventListener(
+            "dblclick",
+            event => {
+                event.preventDefault();
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
+```
